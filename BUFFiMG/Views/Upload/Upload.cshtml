@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "UploadPage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>UploadPage</h1>
+
+<form method="post" action="/Upload/Upload" enctype="multipart/form-data">
+    <input type="file" id="ImageUploadBox" name="ImageUpload" />
+    <br /><br />
+    <input type="submit" value="Upload Image" />
+</form>
