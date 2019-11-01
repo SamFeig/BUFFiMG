@@ -1,10 +1,42 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<script>
+    function changeColor(color) {
+        document.body.style.background = color;
+        if (color == "black"){
+            var want = document.querySelectorAll("p,h1");
+            for (var i = 0; i < want.length; i++) {
+                want[i].style.color = 'white';
+            }
+        }
+        else {
+            var want = document.querySelectorAll("p,h1");
+            for (var i = 0; i < want.length; i++) {
+                want[i].style.color = 'black';
+            }
+        } 
+    }
 
-@Html.ActionLink("Upload an Image", "Index", "Upload")
+</script>
+
+<body>
+    <div class="text-center">
+        <h1 class="display-4">Welcome to BUFFiMG</h1>
+        <div class="search-container">
+            <form action="/action_page.php">
+                <input type="text" placeholder="Search for specific tags.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+    </div>
+
+</body>
