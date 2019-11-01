@@ -1,4 +1,22 @@
-﻿<!DOCTYPE html>
+﻿
+    <script>
+        function changeColor(color) {
+            document.body.style.background = color;
+            if (color == "black") {
+                var want = document.querySelectorAll("p,h1");
+                for (var i = 0; i < want.length; i++) {
+                    want[i].style.color = 'white';
+                }
+            }
+            else {
+                var want = document.querySelectorAll("p,h1");
+                for (var i = 0; i < want.length; i++) {
+                    want[i].style.color = 'black';
+                }
+            }
+        }
+    </script>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -7,6 +25,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
+
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
@@ -22,7 +41,17 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Test">Test</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="LogIn" asp-action="Index">Log In</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn btn-light" onclick="changeColor('')">Default Theme</button>
+                            <button class="btn btn-dark" onclick="changeColor('black')">Dark Theme</button>
                         </li>
                     </ul>
                 </div>
@@ -33,7 +62,9 @@
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
+        
     </div>
+
 
     <footer class="border-top footer text-muted">
         <div class="container">
