@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<body>
+    <div class="text-center">
+        <h1 class="display-4" style="color: white">Welcome to BUFFiMG</h1>
+        <div class="search-container">
+            <!--<form action="/action_page.php">
+                <input type="text" placeholder="Search for specific tags.." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>-->
+            <a class="btn btn-primary" asp-area="" asp-controller="LogIn" asp-action="Index">Sign Up</a>
+            <a class="btn btn-secondary" asp-area="" asp-controller="LogIn" asp-action="Index">Log In</a>
+        </div>
+    </div>
+</body>
