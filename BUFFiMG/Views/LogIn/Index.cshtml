@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "LogIn";
+}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+<!-- jQuery library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+<body {background-image: url('2.jpg');margin: 0;}>
+    <div class="text-center">
+        <h1 class="display-4" style="color:white">Log In</h1>
+        <div class="loginform">
+            <div class="form-group">
+                <input type="text" class="form-control" name="username" placeholder="User Name"
+                       required="required">
+            </div>
+            <div class="form-group">
+                <input id="psw" type="password" class="form-control" name="password" placeholder="Password"
+                       required="required">
+            </div>
+            <div class="form-group">
+                <button id="my_submit_button" class="btn btn-primary btn-block login-btn"
+                        onClick="onClickFunction()">
+                    Sign Up
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
