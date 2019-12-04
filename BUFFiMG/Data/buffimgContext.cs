@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BUFFiMG.Data
 {
-    public partial class buffimgContext : IdentityDbContext
+    public partial class buffimgContext : DbContext
     {
         public buffimgContext()
         {

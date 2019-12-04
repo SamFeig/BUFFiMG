@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using BUFFiMG.Data;
 using BUFFiMG.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
@@ -10,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.AspNetCore.Identity;
 
 namespace BUFFiMG.Controllers
 {
@@ -38,28 +40,48 @@ namespace BUFFiMG.Controllers
             return View("Upload");
         }
 
-        public async Task<IActionResult> Upload(FormImage formImage) //the model will automatically populate since the property names match the form names
+        public async Task<IActionResult> Upload(IFormFile image) //the model will automatically populate since the property names match the form names
         {
-            //make the variable's name shorter
-            IFormFile img = formImage.ImageUpload;
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View("Error");
+            }
 
             //check if it exists
-            if (img != null)
+            if (image != null)
             {
-                var imageId = RandomString(8);
+                var user = User.FindFirst(ClaimTypes.NameIdentifier);
+                var userId = user.Value;
 
-                var fileLocation = Path.Combine(he.WebRootPath, "user_images", Path.GetFileName(imageId) + Path.GetExtension(img.FileName));
+                var imageId = RandomString(8);
+                var fileExtension = Path.GetExtension(image.FileName);
+
+                var fileLocation = Path.Combine(he.WebRootPath, "user_images", Path.GetFileName(imageId) + Path.GetExtension(image.FileName));
+
+                var db = new buffimgContext();
+
+                if (db.Photos.SingleOrDefault(p => p.FilePath == imageId) != null)
+                {
+                    return View("Error");
+                }
 
                 //copy the image to that location
                 await using var stream = new FileStream(fileLocation, FileMode.Create);
                 try
                 {
-                    await img.CopyToAsync(stream);
+                    await image.CopyToAsync(stream);
                 }
                 finally
                 {
                     stream.Close();
                 }
+
+                db.Photos.Add(new Photos()
+                {
+                    FilePath = imageId, IsPublic = true, UserId = userId, FileExtension = fileExtension
+                });
+
+                await db.SaveChangesAsync();
 
                 //replace with SQL code
 
@@ -69,7 +91,7 @@ namespace BUFFiMG.Controllers
             else
             {
                 //they didn't upload a file
-                return RedirectPermanent("/Home");
+                return View("Error");
             }
         }
 

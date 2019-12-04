@@ -14,6 +14,7 @@ namespace BUFFiMG.Data
         public string FilePath { get; set; }
         public string UserId { get; set; }
         public bool IsPublic { get; set; }
+        public string FileExtension { get; set; }
 
         public virtual AspNetUsers User { get; set; }
         public virtual ICollection<PhotoTagMap> PhotoTagMap { get; set; }
