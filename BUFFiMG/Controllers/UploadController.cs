@@ -4,14 +4,17 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using BUFFiMG.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.Logging;
 
+
 namespace BUFFiMG.Controllers
 {
+    [Authorize]
     public class UploadController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -28,6 +31,10 @@ namespace BUFFiMG.Controllers
 
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View("Error");
+            }
             return View("Upload");
         }
 
