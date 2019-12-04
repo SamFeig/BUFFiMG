@@ -1,21 +1,4 @@
 ﻿
-    <script>
-        function changeColor(color) {
-            document.body.style.background = color;
-            if (color == "black") {
-                var want = document.querySelectorAll("p,h1");
-                for (var i = 0; i < want.length; i++) {
-                    want[i].style.color = 'white';
-                }
-            }
-            else {
-                var want = document.querySelectorAll("p,h1");
-                for (var i = 0; i < want.length; i++) {
-                    want[i].style.color = 'black';
-                }
-            }
-        }
-    </script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,10 +9,11 @@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 
-<body>
+<body style="background: #565A5C">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow mb-3" style="background-color: #CFB87E">
             <div class="container">
+                <img src="https://phet.colorado.edu/images/support/University-of-Colorado-logo_v2.png" height="50px" width="50px" style="padding-right: 1px">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BUFFiMG</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -43,9 +27,9 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Test">Test</a>
                         </li>
-                        <li class="nav-item">
+                        <!--<li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="LogIn" asp-action="Index">Log In</a>
-                        </li>
+                        </li> -->
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Upload" asp-action="Index">Upload Picture</a>
                         </li>
@@ -55,9 +39,15 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
-                        <li class="nav-item">
+                       <!-- <li class="nav-item">
                             <button class="btn btn-light" onclick="changeColor('')">Default Theme</button>
                             <button class="btn btn-dark" onclick="changeColor('black')">Dark Theme</button>
+                        </li> -->
+                        <li class="nav-item ml-auto">
+                            <form action="/action_page.php" style="padding-top:5px">
+                                <input type="text" placeholder="Search for specific tags.." name="search" style="border-color: black">
+                                <!--<button type="submit"><i class="fa fa-search"></i></button> -->
+                            </form>
                         </li>
 
                     </ul>
@@ -74,7 +64,7 @@
 
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class="container" style="color:white">
             &copy; 2019 - BUFFiMG - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
