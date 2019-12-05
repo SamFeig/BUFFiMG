@@ -48,14 +48,16 @@ namespace BUFFiMG.Controllers
             }
 
             //check if it exists
-            if (image != null)
+            if (image == null) return View("Error");
+
+            var user = User.FindFirst(ClaimTypes.NameIdentifier);
+            var userId = user.Value;
+
+            var imageId = RandomString(8);
+            var fileExtension = Path.GetExtension(image.FileName);
+
+            if (fileExtension.ToLowerInvariant() == ".png" || fileExtension.ToLowerInvariant() == ".jpg" || fileExtension.ToLowerInvariant() == ".jpeg" || fileExtension.ToLowerInvariant() == ".gif")
             {
-                var user = User.FindFirst(ClaimTypes.NameIdentifier);
-                var userId = user.Value;
-
-                var imageId = RandomString(8);
-                var fileExtension = Path.GetExtension(image.FileName);
-
                 var fileLocation = Path.Combine(he.WebRootPath, "user_images", Path.GetFileName(imageId) + Path.GetExtension(image.FileName));
 
                 var db = new buffimgContext();
@@ -78,7 +80,10 @@ namespace BUFFiMG.Controllers
 
                 db.Photos.Add(new Photos()
                 {
-                    FilePath = imageId, IsPublic = true, UserId = userId, FileExtension = fileExtension
+                    FilePath = imageId,
+                    IsPublic = true,
+                    UserId = userId,
+                    FileExtension = fileExtension
                 });
 
                 await db.SaveChangesAsync();
@@ -86,13 +91,11 @@ namespace BUFFiMG.Controllers
                 //replace with SQL code
 
                 //pass the location's index 
-                return RedirectToAction("Image","Image", new { imageName = imageId });
+                return RedirectToAction("Image", "Image", new { imageName = imageId });
             }
-            else
-            {
-                //they didn't upload a file
-                return View("Error");
-            }
+
+            //they didn't upload a file
+            return View("Error");
         }
 
         private Random random = new Random();
