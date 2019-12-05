@@ -61,7 +61,7 @@ namespace BUFFiMG.Controllers
 
             if (tags != null)
             {
-                tagList = tags.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+                tagList = tags.Split(',').Select(x => x.Trim()).Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
             }
 
             if (fileExtension.ToLowerInvariant() == ".png" || fileExtension.ToLowerInvariant() == ".jpg" || fileExtension.ToLowerInvariant() == ".jpeg" || fileExtension.ToLowerInvariant() == ".gif")
@@ -96,13 +96,15 @@ namespace BUFFiMG.Controllers
 
                 db.Photos.Add(newPhoto);
 
-                var localTagsList = new List<Tags>();
+                var newTagsList = new List<Tags>();
+                var existingTagsList = new List<Tags>();
 
                 foreach (var tag in tagList)
                 {
-                    var normalizedTag = tag.Normalize();
+                    var normalizedTag = tag.ToLowerInvariant();
+                    var existingTag = db.Tags.SingleOrDefault(t => t.Description == normalizedTag);
 
-                    if (db.Tags.SingleOrDefault(t => t.Description == normalizedTag) == null)
+                    if (existingTag == null)
                     {
                         var tagId = new Random().Next(int.MaxValue);
                         // make sure tagId is unique
@@ -111,20 +113,28 @@ namespace BUFFiMG.Controllers
                             tagId = new Random().Next(int.MaxValue);
                         }
 
-                        localTagsList.Add(new Tags() { Description = normalizedTag, TagId = tagId });
+                        newTagsList.Add(new Tags() { Description = normalizedTag, TagId = tagId });
+                    }
+                    else
+                    {
+                        existingTagsList.Add(existingTag);
                     }
                 }
 
-                db.Tags.AddRange(localTagsList);
+                db.Tags.AddRange(newTagsList);
 
                 // add new photo and tags
                 await db.SaveChangesAsync();
 
                 newPhoto = db.Photos.Single(p => p.FilePath == imageId);
 
-                foreach (var tag in localTagsList)
+                foreach (var tag in newTagsList)
                 {
                     db.PhotoTagMap.Add(new PhotoTagMap() { PhotoId = newPhoto.PhotoId, TagId = tag.TagId });
+                }
+                foreach (var existingTag in existingTagsList)
+                {
+                    db.PhotoTagMap.Add(new PhotoTagMap() { PhotoId = newPhoto.PhotoId, TagId = existingTag.TagId });
                 }
 
                 await db.SaveChangesAsync();
