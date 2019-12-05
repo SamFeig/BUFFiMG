@@ -24,6 +24,7 @@ namespace BUFFiMG.Controllers
             {
                 foreach (var photoTagMap in relevantTag.PhotoTagMap)
                 {
+                    if (!photoTagMap.Photo.IsPublic) continue;
                     var path = Path.Combine("/user_images/", photoTagMap.Photo.FilePath + photoTagMap.Photo.FileExtension);
 
                     imageModel.imageList.Add(new DisplayImage() { src = path, tags = new List<string>() });

@@ -41,7 +41,7 @@ namespace BUFFiMG.Controllers
             return View("Upload");
         }
 
-        public async Task<IActionResult> Upload(IFormFile image, string tags) //the model will automatically populate since the property names match the form names
+        public async Task<IActionResult> Upload(IFormFile image, string tags, bool isPrivate) //the model will automatically populate since the property names match the form names
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -89,7 +89,7 @@ namespace BUFFiMG.Controllers
                 var newPhoto = new Photos()
                 {
                     FilePath = imageId,
-                    IsPublic = true,
+                    IsPublic = !isPrivate,
                     UserId = userId,
                     FileExtension = fileExtension
                 };
@@ -142,7 +142,7 @@ namespace BUFFiMG.Controllers
                 return RedirectToAction("Image", "Image", new { imageName = imageId });
             }
 
-            //they didn't upload a file
+            //they didn't upload a file or something went wrong
             return View("Error");
         }
 

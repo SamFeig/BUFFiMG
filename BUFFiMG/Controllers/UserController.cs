@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using BUFFiMG.Models;
 using System.IO;
 using System.Security.Claims;
+using BUFFiMG.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace BUFFiMG.Controllers
@@ -23,7 +24,7 @@ namespace BUFFiMG.Controllers
             }
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             var userId = user.Value;
-            var db = new BUFFiMG.Data.buffimgContext();
+            var db = new buffimgContext();
             var currentUser = db.AspNetUsers.Include(u => u.Photos).SingleOrDefault(u => u.Id == userId);
 
             if(currentUser == null)

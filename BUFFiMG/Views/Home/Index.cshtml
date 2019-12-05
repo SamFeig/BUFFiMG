@@ -1,4 +1,5 @@
-﻿@{
+﻿@model UserImagesModel
+@{
     ViewData["Title"] = "Home Page";
 }
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -10,7 +11,23 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
 <body>
-    <div class="text-center">
-        <h1 class="display-4" style="color: white">Welcome to BUFFiMG</h1>
-    </div>
+<div class="text-center">
+    <h1 class="display-4" style="color: white">Welcome to BUFFiMG! Here are some recently uploaded images by our users:</h1>
+</div>
+
+<div>
+    @if (Model != null)
+    {
+        @foreach (var image in Model.imageList)
+         {
+             <div class="row">
+                 <div class="col"/>
+                 <div class="col-12">
+                     <img src=@image.src class="img-fluid"/>
+                 </div>
+                 <div class="col"/>
+             </div>
+         }
+    }
+</div>
 </body>
