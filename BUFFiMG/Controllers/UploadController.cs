@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing.Constraints;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Hosting;
 
 namespace BUFFiMG.Controllers
 {
@@ -40,7 +41,7 @@ namespace BUFFiMG.Controllers
             return View("Upload");
         }
 
-        public async Task<IActionResult> Upload(IFormFile image) //the model will automatically populate since the property names match the form names
+        public async Task<IActionResult> Upload(IFormFile image, string tags) //the model will automatically populate since the property names match the form names
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -55,6 +56,13 @@ namespace BUFFiMG.Controllers
 
             var imageId = RandomString(8);
             var fileExtension = Path.GetExtension(image.FileName);
+            
+            var tagList = new List<string>();
+
+            if (tags != null)
+            {
+                tagList = tags.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList();
+            }
 
             if (fileExtension.ToLowerInvariant() == ".png" || fileExtension.ToLowerInvariant() == ".jpg" || fileExtension.ToLowerInvariant() == ".jpeg" || fileExtension.ToLowerInvariant() == ".gif")
             {
@@ -78,19 +86,49 @@ namespace BUFFiMG.Controllers
                     stream.Close();
                 }
 
-                db.Photos.Add(new Photos()
+                var newPhoto = new Photos()
                 {
                     FilePath = imageId,
                     IsPublic = true,
                     UserId = userId,
                     FileExtension = fileExtension
-                });
+                };
+
+                db.Photos.Add(newPhoto);
+
+                var localTagsList = new List<Tags>();
+
+                foreach (var tag in tagList)
+                {
+                    var normalizedTag = tag.Normalize();
+
+                    if (db.Tags.SingleOrDefault(t => t.Description == normalizedTag) == null)
+                    {
+                        var tagId = new Random().Next(int.MaxValue);
+                        // make sure tagId is unique
+                        while (db.Tags.SingleOrDefault(t => t.TagId == tagId) != null)
+                        {
+                            tagId = new Random().Next(int.MaxValue);
+                        }
+
+                        localTagsList.Add(new Tags() { Description = normalizedTag, TagId = tagId });
+                    }
+                }
+
+                db.Tags.AddRange(localTagsList);
+
+                // add new photo and tags
+                await db.SaveChangesAsync();
+
+                newPhoto = db.Photos.Single(p => p.FilePath == imageId);
+
+                foreach (var tag in localTagsList)
+                {
+                    db.PhotoTagMap.Add(new PhotoTagMap() { PhotoId = newPhoto.PhotoId, TagId = tag.TagId });
+                }
 
                 await db.SaveChangesAsync();
 
-                //replace with SQL code
-
-                //pass the location's index 
                 return RedirectToAction("Image", "Image", new { imageName = imageId });
             }
 
