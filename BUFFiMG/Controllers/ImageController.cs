@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using BUFFiMG.Data;
 using BUFFiMG.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -28,15 +29,13 @@ namespace BUFFiMG.Controllers
 
         public IActionResult Image(string imageName)
         {
-            //replace with SQL
-            //get the file location
+            var db = new buffimgContext();
 
-            var files = Directory.GetFiles(Path.Combine(he.WebRootPath, "user_images"), imageName + ".*");
+            var photo = db.Photos.SingleOrDefault(p => p.FilePath == imageName);
+            
+            if (photo == null) return View("Error");
 
-            if (files.Length == 0) return View("Error");
-            var fileName = Path.GetFileName(files[0]);
-
-            var path = Path.Combine("/user_images/", fileName);
+            var path = Path.Combine("/user_images/", photo.FilePath + photo.FileExtension);
 
             //prep the model
             DisplayImage img = new DisplayImage();

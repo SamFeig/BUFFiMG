@@ -1,40 +1,22 @@
-﻿@{
+﻿@model UserImagesModel
+@{
     ViewData["Title"] = "User";
 }
-<!--<h1 style="color: white">@ViewData["Title"]</h1>
-
-<p style="color: white">Use this page to detail for Users.</p> -->
 
 <body>
-    <div class="text-center">
-        <h1 class="display-4" style="color: white">Welcome, Username</h1>
-        <!--<div class="search-container">
-            <form action="/action_page.php">
-                <input type="text" placeholder="Search for specific tags.." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-        </div> -->
+<div class="text-center">
+    <h1 class="display-4" style="color: white">Your uploaded images:</h1>
+</div>
+<div align="center" style="margin: 10%">
+    @foreach (var image in Model.imageList)
+    {
+    <div class="row">
+        <div class="col"/>
+        <div class="col-12">
+            <img src=@image.src class="img-fluid"/>
+        </div>
+        <div class="col"/>
     </div>
-    <div class="container">
-        <table class="table table-bordered">
-            <tbody>
-                <tr>
-                    <td class="text-center" id="A1">Picture1</td>
-                    <td class="text-center" id="A2">Picture2</td>
-                    <td class="text-center" id="A3">Picture3</td>
-                </tr>
-                <tr>
-                    <td class="text-center" id="B1">Picture4</td>
-                    <td class="text-center" id="B2">Picture5</td>
-                    <td class="text-center" id="B3">Picture6</td>
-                </tr>
-                <tr>
-                    <td class="text-center" id="C1">Picture7</td>
-                    <td class="text-center" id="C2">Picture8</td>
-                    <td class="text-center" id="C3">Picture9</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
+    }
+</div>
 </body>
