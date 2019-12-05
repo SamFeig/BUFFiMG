@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authorization;
 using BUFFiMG.Models;
 using System.IO;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace BUFFiMG.Controllers
 {
@@ -23,23 +24,25 @@ namespace BUFFiMG.Controllers
             var user = User.FindFirst(ClaimTypes.NameIdentifier);
             var userId = user.Value;
             var db = new BUFFiMG.Data.buffimgContext();
-            var currentUser = db.AspNetUsers.SingleOrDefault(u => u.Id == userId);
+            var currentUser = db.AspNetUsers.Include(u => u.Photos).SingleOrDefault(u => u.Id == userId);
 
-            if(currentUser == null){
+            if(currentUser == null)
+            {
                 return View("Error");
             }
 
             var photos = currentUser.Photos;
 
-            var ImageModel = new UserImagesModel();
+            var imageModel = new UserImagesModel();
 
-            foreach(var photo in photos) {
+            foreach(var photo in photos) 
+            {
                 var path = Path.Combine("/user_images/", photo.FilePath + photo.FileExtension);
 
-                ImageModel.imageList.Add(new DisplayImage(){src=path, tags=new List<string>()});
-                }
+                imageModel.imageList.Add(new DisplayImage(){src=path, tags=new List<string>()});
+            }
 
-            return View(ImageModel);
+            return View(imageModel);
         }
 
         //
