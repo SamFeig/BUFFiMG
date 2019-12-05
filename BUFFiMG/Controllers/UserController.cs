@@ -4,13 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Encodings.Web;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BUFFiMG.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
         public IActionResult Index()
         {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return View("Error");
+            }
             return View();
         }
 
