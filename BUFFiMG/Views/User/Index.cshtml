@@ -1,4 +1,5 @@
-﻿@{
+﻿@model UserImagesModel
+@{
     ViewData["Title"] = "User";
 }
 <!--<h1 style="color: white">@ViewData["Title"]</h1>
@@ -15,7 +16,17 @@
             </form>
         </div> -->
     </div>
-    <div class="container">
+    <div>
+        <p>
+            @foreach (var image in Model.imageList)
+            {
+                <div style="width: 80%; margin: 0 auto;">
+                    <img src=@image.src style="width:100%;"/>
+                </div>
+            }
+        </p>
+    </div>
+    <!--<div class="container">
         <table class="table table-bordered">
             <tbody>
                 <tr>
@@ -35,6 +46,6 @@
                 </tr>
             </tbody>
         </table>
-    </div>
+    </div>-->
 
 </body>
